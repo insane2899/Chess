@@ -6,20 +6,23 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.soumik.chess.engine.Alliance;
-import com.soumik.chess.engine.board.AttackMove;
 import com.soumik.chess.engine.board.Board;
 import com.soumik.chess.engine.board.BoardUtils;
+import com.soumik.chess.engine.board.MajorAttackMove;
 import com.soumik.chess.engine.board.MajorMove;
 import com.soumik.chess.engine.board.Move;
 import com.soumik.chess.engine.board.Tile;
-import com.soumik.chess.engine.pieces.Piece.PieceType;
 
 public final class Rook extends Piece {
 
 	private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-8,-1,1,8};
 
 	public Rook(final int piecePosition,final Alliance pieceAlliance) {
-		super(piecePosition, pieceAlliance,PieceType.ROOK);
+		super(piecePosition, pieceAlliance,PieceType.ROOK,true);
+	}
+	
+	public Rook(final int piecePosition,final Alliance pieceAlliance,final boolean isFirstMove) {
+		super(piecePosition, pieceAlliance,PieceType.ROOK,isFirstMove);
 	}
 	
 	@Override
@@ -48,7 +51,7 @@ public final class Rook extends Piece {
 						final Piece pieceAtDestination = candidateDestinationTile.getPiece();
 						final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
 						if(this.pieceAlliance!=pieceAlliance) {												//Check if presence is same colour or different
-							legalMoves.add(new AttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
+							legalMoves.add(new MajorAttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
 						}
 						break;  //once we encounter a piece whether friendly or enemy the loop will break as rook will have to stop there
 					}
@@ -68,7 +71,7 @@ public final class Rook extends Piece {
 	
 	@Override
 	public Piece movePiece(Move move) {
-		return new Rook(move.getDestinationCoordinate(),move.getMovedPiece().getPieceAlliance());
+		return new Rook(move.getDestinationCoordinate(),move.getMovedPiece().getPieceAlliance(),false);
 	}
 
 

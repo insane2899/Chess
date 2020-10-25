@@ -5,21 +5,31 @@ import com.soumik.chess.engine.pieces.Piece;
 
 public abstract class Move {
 	
-	final Board board;
-	final Piece movedPiece;
-	final int destinationCoordinate;
+	protected final Board board;
+	protected final Piece movedPiece;
+	protected final int destinationCoordinate;
+	protected final boolean isFirstMove;
 	public static final Move NULL_MOVE = new NullMove();
 	
 	Move(){
 		this.board = null;
 		this.movedPiece=null;
 		this.destinationCoordinate=0;
+		this.isFirstMove = false;
 	}
 	
 	Move(final Board board,final Piece movedPiece,final int destinationCoordinate){
 		this.board = board;
 		this.movedPiece=movedPiece;
 		this.destinationCoordinate=destinationCoordinate;
+		this.isFirstMove=movedPiece.isFirstMove();
+	}
+	
+	Move(final Board board,final int destinationCoordinate) {
+		this.board = board;
+		this.destinationCoordinate=destinationCoordinate;
+		this.movedPiece = null;
+		this.isFirstMove=false;
 	}
 	
 	@Override
@@ -32,7 +42,7 @@ public abstract class Move {
 		}
 		final Move otherMove = (Move)other;
 		return this.getDestinationCoordinate()==otherMove.getDestinationCoordinate() &&
-				this.getMovedPiece()==otherMove.getMovedPiece();
+				this.getMovedPiece()==otherMove.getMovedPiece() && getCurrentCoordinate() == otherMove.getCurrentCoordinate();
 	}
 	
 	@Override
@@ -41,11 +51,16 @@ public abstract class Move {
 		int result = 1;
 		result = prime*result + this.destinationCoordinate;
 		result = prime*result+this.movedPiece.hashCode();
+		result = prime*result + this.movedPiece.getPiecePosition();
 		return result;
 	}
 	
 	public int getCurrentCoordinate() {
 		return this.movedPiece.getPiecePosition();
+	}
+	
+	public Board getBoard() {
+		return this.board;
 	}
 	
 	public int getDestinationCoordinate() {

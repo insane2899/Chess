@@ -11,6 +11,11 @@ public class KingSideCastleMove extends CastleMove{
 	}
 	
 	@Override
+	public boolean equals(final Object other) {
+		return this==other || (other instanceof KingSideCastleMove && super.equals(other));
+	}
+	
+	@Override
 	public String toString() {
 		return "0-0";
 	}

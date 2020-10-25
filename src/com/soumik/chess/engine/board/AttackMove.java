@@ -10,11 +10,6 @@ public class AttackMove extends Move {
 		super(board, movedPiece, destinationCoordinate);
 		this.attackedPiece=attackedPiece;
 	}
-
-	@Override
-	public Board execute() {
-		return null;
-	}
 	
 	@Override
 	public boolean isAttacked() {
@@ -41,6 +36,11 @@ public class AttackMove extends Move {
 	@Override
 	public Piece getAttackedPiece() {
 		return this.attackedPiece;
+	}
+	
+	@Override
+	public String toString() {
+		return "x"+BoardUtils.getPositionAtCoordinate(destinationCoordinate);
 	}
 
 }

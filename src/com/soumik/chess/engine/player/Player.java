@@ -51,7 +51,7 @@ public abstract class Player {
 				return (King) piece;
 			}
 		}
-			throw new RuntimeException("Should not reach here! Board is invalid");
+		throw new RuntimeException("Should not reach here! Board is invalid");
 	}
 
 	public abstract Collection<Piece> getActivePieces();
@@ -83,14 +83,13 @@ public abstract class Player {
 		if(!isMoveLegal(move)) {
 			return new MoveTransition(this.board,move,MoveStatus.ILLEGAL_MOVE);
 		}
-		
 		final Board transitionBoard = move.execute();
 		final Collection<Move> kingAttacks = Player.calculateAttacksOnTile(transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
 				transitionBoard.currentPlayer().getLegalMoves());
 		if(!kingAttacks.isEmpty()) {
 			return new MoveTransition(this.board,move,MoveStatus.LEAVES_PLAYER_IN_CHECK);
 		}
-		return new MoveTransition(this.board,move,MoveStatus.DONE);
+		return new MoveTransition(transitionBoard,move,MoveStatus.DONE);
 	}
 	
 	protected boolean hasEscapeMoves(){

@@ -5,7 +5,12 @@ import com.soumik.chess.engine.pieces.Piece;
 public class NullMove extends Move {
 
 	public NullMove() {
-		super(null, null,-1);
+		super(null,65);
+	}
+	
+	@Override
+	public int getCurrentCoordinate() {
+		return -1;
 	}
 	
 	@Override

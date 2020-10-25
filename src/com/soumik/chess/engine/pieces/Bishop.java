@@ -6,9 +6,9 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.soumik.chess.engine.Alliance;
-import com.soumik.chess.engine.board.AttackMove;
 import com.soumik.chess.engine.board.Board;
 import com.soumik.chess.engine.board.BoardUtils;
+import com.soumik.chess.engine.board.MajorAttackMove;
 import com.soumik.chess.engine.board.MajorMove;
 import com.soumik.chess.engine.board.Move;
 import com.soumik.chess.engine.board.Tile;
@@ -16,9 +16,13 @@ import com.soumik.chess.engine.board.Tile;
 public class Bishop extends Piece {
 	
 	private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-9,-7,7,9};
-
+	
 	public Bishop(final int piecePosition,final Alliance pieceAlliance) {
-		super(piecePosition, pieceAlliance,PieceType.BISHOP);
+		super(piecePosition, pieceAlliance,PieceType.BISHOP,true);
+	}
+
+	public Bishop(final int piecePosition,final Alliance pieceAlliance,final boolean isFirstMove) {
+		super(piecePosition, pieceAlliance,PieceType.BISHOP,isFirstMove);
 	}
 	
 	@Override
@@ -47,7 +51,7 @@ public class Bishop extends Piece {
 						final Piece pieceAtDestination = candidateDestinationTile.getPiece();
 						final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
 						if(this.pieceAlliance!=pieceAlliance) {												//Check if presence is same colour or different
-							legalMoves.add(new AttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
+							legalMoves.add(new MajorAttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
 						}
 						break;  //once we encounter a piece whether friendly or enemy the loop will break as bishop will have to stop there
 					}
@@ -68,7 +72,7 @@ public class Bishop extends Piece {
 
 	@Override
 	public Piece movePiece(Move move) {
-		return new Bishop(move.getDestinationCoordinate(),move.getMovedPiece().getPieceAlliance());
+		return new Bishop(move.getDestinationCoordinate(),move.getMovedPiece().getPieceAlliance(),false);
 	}
 
 }

@@ -6,21 +6,25 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.soumik.chess.engine.Alliance;
-import com.soumik.chess.engine.board.AttackMove;
 import com.soumik.chess.engine.board.Board;
 import com.soumik.chess.engine.board.BoardUtils;
+import com.soumik.chess.engine.board.MajorAttackMove;
 import com.soumik.chess.engine.board.MajorMove;
 import com.soumik.chess.engine.board.Move;
 import com.soumik.chess.engine.board.Tile;
-import com.soumik.chess.engine.pieces.Piece.PieceType;
 
 public class King extends Piece {
 	
 	private static final int[] CANDIDATE_COORDINATE_MOVE= {-9,-8,-7,-1,1,7,8,9};
 
 	public King(final int piecePosition,final Alliance pieceAlliance) {
-		super(piecePosition, pieceAlliance,PieceType.KING);
+		super(piecePosition, pieceAlliance,PieceType.KING,true);
 	}
+	
+	public King(final int piecePosition,final Alliance pieceAlliance,final boolean isFirstMove) {
+		super(piecePosition, pieceAlliance,PieceType.KING,isFirstMove);
+	}
+
 	
 	@Override
 	public String toString() {
@@ -45,7 +49,7 @@ public class King extends Piece {
 					final Piece pieceAtDestination = candidateDestinationTile.getPiece();
 					final Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
 					if(this.pieceAlliance!=pieceAlliance) {												//Check if presence is same colour or different
-						legalMoves.add(new AttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
+						legalMoves.add(new MajorAttackMove(board,this,candidateDestinationCoordinate,pieceAtDestination));
 					}
 				}
 			}
@@ -68,7 +72,7 @@ public class King extends Piece {
 	
 	@Override
 	public Piece movePiece(Move move) {
-		return new King(move.getDestinationCoordinate(),move.getMovedPiece().getPieceAlliance());
+		return new King(move.getDestinationCoordinate(),move.getMovedPiece().getPieceAlliance(),false);
 	}
 
 }
