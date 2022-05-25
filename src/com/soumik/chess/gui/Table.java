@@ -52,7 +52,7 @@ public class Table extends Observable{
 	protected final static Dimension TILE_PANEL_DIMENSION = new Dimension(10,10);
 	protected final BoardPanel boardPanel;
 	private Board chessBoard;
-	private String pieceIconPath = "chesspieces/plain/";
+	private String pieceIconPath = "/chesspieces/plain/";
 	private Tile sourceTile;
 	private Tile destinationTile;
 	private Piece humanMovedPiece;
@@ -66,6 +66,7 @@ public class Table extends Observable{
 		
 	private Table() {
 		this.gameFrame = new JFrame("Chess");
+		this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.gameHistoryPanel=new GameHistoryPanel();
 		this.takenPiecesPanel=new TakenPiecesPanel();
 		this.highlightLegalMoves = false;
@@ -401,7 +402,7 @@ public class Table extends Observable{
 				for(final Move move:pieceLegalMoves(board)) {
 					if(move.getDestinationCoordinate()==this.tileID) {
 						try {
-							add(new JLabel(new ImageIcon(ImageIO.read(new File("chesspieces/misc/green_dot.png")))));
+							add(new JLabel(new ImageIcon(ImageIO.read(Table.class.getResourceAsStream("/chesspieces/misc/green_dot.png")))));
 						}catch(Exception e) {
 							e.printStackTrace();
 						}
@@ -429,7 +430,7 @@ public class Table extends Observable{
 			this.removeAll();
 			if(board.getTile(this.tileID).isTileOccupied()) {
 				try {
-					final BufferedImage image = ImageIO.read(new File(pieceIconPath + board.getTile(this.tileID).getPiece().getPieceAlliance()
+					final BufferedImage image = ImageIO.read(Table.class.getResourceAsStream(pieceIconPath + board.getTile(this.tileID).getPiece().getPieceAlliance()
 							.toString().charAt(0) + board.getTile(this.tileID).getPiece().toString().charAt(0)+".gif"));
 					add(new JLabel(new ImageIcon(image)));
 				} catch (IOException e) {
